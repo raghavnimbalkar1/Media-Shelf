@@ -272,6 +272,12 @@ button {
   display: block;
 }
 
+/* Game/book covers aren't 2:3 — show them whole instead of cropping. */
+.case-poster-wrap img.fit-contain {
+  object-fit: contain;
+  background: var(--void);
+}
+
 .case-poster-fallback {
   width: 100%;
   height: 100%;
@@ -466,6 +472,7 @@ button {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(20, 17, 26, 0.2), var(--panel));
+  pointer-events: none; /* let clicks reach the ✕ button underneath */
 }
 
 .detail-body {
@@ -856,4 +863,110 @@ button {
   font-size: 12px;
   color: var(--text-faint);
   text-align: right;
+}
+
+/* ---------- Brutalist / maximalist accents (v1.0) ---------- */
+
+:root {
+  --hard-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55);
+  --hard-shadow-lg: 8px 8px 0 rgba(0, 0, 0, 0.6);
+}
+
+.wordmark {
+  font-weight: 700;
+  font-size: 23px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* Chunky, pressable buttons with a hard drop instead of a soft glow */
+.btn-amber,
+.btn-ghost {
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-amber {
+  border: 2px solid #241804;
+  box-shadow: var(--hard-shadow);
+}
+
+.btn-amber:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.6);
+}
+
+.btn-amber:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.btn-ghost {
+  border-width: 2px;
+}
+
+.btn-ghost:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--hard-shadow);
+}
+
+.btn-ghost:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Nav + filter chips: harder edges */
+.nav-btn {
+  border-radius: 3px;
+}
+
+.nav-btn.active {
+  border: 2px solid var(--void);
+  font-weight: 700;
+}
+
+.select-chip,
+.search-input {
+  border-radius: 4px;
+}
+
+/* Framed covers with a hard offset shadow on hover */
+.case-poster-wrap {
+  border-radius: 2px;
+  border: 2px solid #0c0910;
+}
+
+.case:hover .case-poster-wrap {
+  box-shadow: 8px 8px 0 rgba(232, 163, 61, 0.85);
+}
+
+/* Panels get a solid outline + offset block */
+.modal-center {
+  border: 2px solid var(--hairline);
+  border-radius: 4px;
+  box-shadow: var(--hard-shadow-lg);
+}
+
+.drawer {
+  border-left: 3px solid var(--amber);
+  box-shadow: var(--hard-shadow-lg);
+}
+
+.stat-card {
+  border-radius: 4px;
+  border: 2px solid var(--hairline);
+  box-shadow: var(--hard-shadow);
+}
+
+/* Section headings shout a little */
+.stats-section-title {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  border-left: 4px solid var(--amber);
+  padding-left: 10px;
 }

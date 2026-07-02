@@ -115,7 +115,8 @@ export default function App() {
             />
             <select className="select-chip" value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
               <option value="all">All categories</option>
-              <option value="movie">Movies / TV</option>
+              <option value="movie">Movies</option>
+              <option value="tv">TV Shows</option>
               <option value="game">Games</option>
               <option value="book">Books</option>
             </select>

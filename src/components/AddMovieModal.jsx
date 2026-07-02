@@ -17,10 +17,13 @@ const fallbackApi = {
 const api = window.api || fallbackApi;
 
 const CATEGORY_OPTIONS = [
-  { key: "movie", label: "Movies / TV" },
+  { key: "movie", label: "Movies" },
+  { key: "tv", label: "TV Shows" },
   { key: "game", label: "Games" },
   { key: "book", label: "Books" },
 ];
+
+const TMDB_CATEGORIES = new Set(["movie", "tv"]);
 
 const createInitialForm = () => ({
   category: "movie",
@@ -49,7 +52,7 @@ export default function AddMovieModal({ onClose, onAdded, hasApiKey, onOpenSetti
   useEscape(onClose);
 
   useEffect(() => {
-    if (!hasApiKey || form.category !== "movie") {
+    if (!hasApiKey || !TMDB_CATEGORIES.has(form.category)) {
       setResults([]);
       return;
     }
@@ -88,6 +91,7 @@ export default function AddMovieModal({ onClose, onAdded, hasApiKey, onOpenSetti
       });
       setForm((prev) => ({
         ...prev,
+        category: result.media_kind === "tv" ? "tv" : "movie",
         title: detail.title || prev.title,
         creator: detail.director || prev.creator,
         year: detail.year || prev.year,
@@ -141,16 +145,20 @@ export default function AddMovieModal({ onClose, onAdded, hasApiKey, onOpenSetti
   }
 
   const creatorLabel = {
-    movie: "Director / Creator",
+    movie: "Director",
+    tv: "Creator",
     game: "Developer",
     book: "Author",
   }[form.category] || "Creator";
 
   const platformLabel = {
     movie: "Format / Medium",
+    tv: "Format / Medium",
     game: "Platform",
     book: "Format",
   }[form.category] || "Platform";
+
+  const isTmdbCategory = TMDB_CATEGORIES.has(form.category);
 
   return (
     <div className="overlay" onMouseDown={onClose}>
@@ -192,7 +200,7 @@ export default function AddMovieModal({ onClose, onAdded, hasApiKey, onOpenSetti
 
             <div className="field-block full">
               <span className="field-label">{platformLabel}</span>
-              <input className="field-input" value={form.platform} onChange={(e) => updateField("platform", e.target.value)} placeholder={form.category === "movie" ? "DVD / Blu-ray / 4K UHD" : form.category === "game" ? "Switch / PS5 / PC" : "Hardcover / Paperback"} />
+              <input className="field-input" value={form.platform} onChange={(e) => updateField("platform", e.target.value)} placeholder={isTmdbCategory ? "DVD / Blu-ray / 4K UHD" : form.category === "game" ? "Switch / PS5 / PC" : "Hardcover / Paperback"} />
             </div>
 
             <div className="field-block full">
@@ -202,7 +210,7 @@ export default function AddMovieModal({ onClose, onAdded, hasApiKey, onOpenSetti
 
             <div className="field-block">
               <span className="field-label">Length / Runtime</span>
-              <input className="field-input" value={form.length_value} onChange={(e) => updateField("length_value", e.target.value)} placeholder={form.category === "movie" ? "120" : form.category === "game" ? "40" : "320"} />
+              <input className="field-input" value={form.length_value} onChange={(e) => updateField("length_value", e.target.value)} placeholder={isTmdbCategory ? "120" : form.category === "game" ? "40" : "320"} />
             </div>
 
             <div className="field-block">
@@ -220,7 +228,7 @@ export default function AddMovieModal({ onClose, onAdded, hasApiKey, onOpenSetti
               </div>
             </div>
 
-            {form.category === "movie" && (
+            {isTmdbCategory && (
               <div className="field-block full">
                 <span className="field-label">Optional TMDB shortcut</span>
                 <input

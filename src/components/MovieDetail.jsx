@@ -13,7 +13,8 @@ const fallbackApi = {
 const api = window.api || fallbackApi;
 
 const CATEGORY_LABELS = {
-  movie: "Movies / TV",
+  movie: "Movies",
+  tv: "TV Shows",
   game: "Games",
   book: "Books",
 };
@@ -56,7 +57,8 @@ export default function MovieDetail({ movie, onClose, onChange, onDelete }) {
   const creatorLabel = useMemo(() => {
     if (form.category === "game") return "Developer";
     if (form.category === "book") return "Author";
-    return "Director / Creator";
+    if (form.category === "tv") return "Creator";
+    return "Director";
   }, [form.category]);
 
   const platformLabel = useMemo(() => {
@@ -83,7 +85,11 @@ export default function MovieDetail({ movie, onClose, onChange, onDelete }) {
   }
 
   function toggleCompleted() {
-    onChange(movie.id, { completed: !movie.completed });
+    const completed = !movie.completed;
+    onChange(movie.id, {
+      completed,
+      date_completed: completed ? new Date().toISOString() : null,
+    });
   }
 
   function confirmDelete() {
@@ -178,7 +184,8 @@ export default function MovieDetail({ movie, onClose, onChange, onDelete }) {
               <div className="field-block full">
                 <span className="field-label">Category</span>
                 <select className="field-select" value={form.category} onChange={(e) => updateField("category", e.target.value)}>
-                  <option value="movie">Movies / TV</option>
+                  <option value="movie">Movies</option>
+                  <option value="tv">TV Shows</option>
                   <option value="game">Games</option>
                   <option value="book">Books</option>
                 </select>

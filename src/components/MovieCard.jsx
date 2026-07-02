@@ -1,9 +1,10 @@
 import React from "react";
 
 const CATEGORY_LABELS = {
-  movie: "Movies/TV",
-  game: "Games",
-  book: "Books",
+  movie: "Movie",
+  tv: "TV",
+  game: "Game",
+  book: "Book",
 };
 
 export default function MovieCard({ movie, onClick }) {
@@ -13,7 +14,12 @@ export default function MovieCard({ movie, onClick }) {
     <div className="case" onClick={onClick}>
       <div className="case-poster-wrap">
         {movie.poster_path ? (
-          <img src={movie.poster_path} alt={movie.title} loading="lazy" />
+          <img
+            src={movie.poster_path}
+            alt={movie.title}
+            loading="lazy"
+            className={movie.category === "game" || movie.category === "book" ? "fit-contain" : undefined}
+          />
         ) : (
           <div className="case-poster-fallback">{movie.title}</div>
         )}

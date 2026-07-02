@@ -142,7 +142,8 @@ function updateItem(id, patch) {
   for (const key of allowed) {
     if (key in patch) {
       fields.push(`${key} = @${key}`);
-      params[key] = patch[key];
+      // SQLite bindings can't take JS booleans — store completed as 0/1.
+      params[key] = key === "completed" ? (patch[key] ? 1 : 0) : patch[key];
     }
   }
   if ("genres" in patch) {

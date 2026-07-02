@@ -1,7 +1,8 @@
 import React from "react";
 
 const CATEGORY_LABELS = {
-  movie: "Movies / TV",
+  movie: "Movies",
+  tv: "TV Shows",
   game: "Games",
   book: "Books",
 };
