@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import useEscape from "../useEscape.js";
 
 const fallbackApi = {
   tmdb: {
@@ -44,6 +45,8 @@ export default function AddMovieModal({ onClose, onAdded, hasApiKey, onOpenSetti
   const [form, setForm] = useState(createInitialForm);
   const [saving, setSaving] = useState(false);
   const debounceRef = useRef(null);
+
+  useEscape(onClose);
 
   useEffect(() => {
     if (!hasApiKey || form.category !== "movie") {

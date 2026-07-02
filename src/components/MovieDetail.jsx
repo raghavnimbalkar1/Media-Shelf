@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import useEscape from "../useEscape.js";
 
 const fallbackApi = {
   files: {
@@ -32,6 +33,8 @@ export default function MovieDetail({ movie, onClose, onChange, onDelete }) {
     length_value: movie.length_value ?? "",
     notes: movie.notes || "",
   });
+
+  useEscape(onClose);
 
   useEffect(() => {
     setForm({

@@ -79,6 +79,15 @@ export default function App() {
     await loadItems();
   }
 
+  const filtersActive =
+    query.trim() !== "" || completedFilter !== "all" || categoryFilter !== "all";
+
+  function clearFilters() {
+    setQuery("");
+    setCompletedFilter("all");
+    setCategoryFilter("all");
+  }
+
   const selectedItem = items.find((item) => item.id === selectedId) || null;
 
   return (
@@ -133,17 +142,35 @@ export default function App() {
 
       {view === "shelf" ? (
         items.length === 0 ? (
-          <div className="empty-state">
-            <h2>Your catalog is ready.</h2>
-            <p>
-              Start with a movie, game, or book you own. Add it by hand, or use TMDB as a shortcut for movies and TV.
-            </p>
-            <button className="btn-amber" style={{ marginTop: 10 }} onClick={() => setShowAdd(true)}>
-              + Add your first entry
-            </button>
-          </div>
+          filtersActive ? (
+            <div className="empty-state">
+              <h2>No matches.</h2>
+              <p>Nothing on your shelf fits the current search and filters.</p>
+              <button className="btn-ghost" style={{ marginTop: 10 }} onClick={clearFilters}>
+                Clear filters
+              </button>
+            </div>
+          ) : (
+            <div className="empty-state">
+              <h2>Your catalog is ready.</h2>
+              <p>
+                Start with a movie, game, or book you own. Add it by hand, or use TMDB as a shortcut for movies and TV.
+              </p>
+              <button className="btn-amber" style={{ marginTop: 10 }} onClick={() => setShowAdd(true)}>
+                + Add your first entry
+              </button>
+            </div>
+          )
         ) : (
           <div className="shelf-scroll">
+            <div className="shelf-count">
+              {items.length} {items.length === 1 ? "item" : "items"}
+              {filtersActive && (
+                <button className="clear-filters-link" onClick={clearFilters}>
+                  Clear filters
+                </button>
+              )}
+            </div>
             <div className="shelf-grid">
               {items.map((item) => (
                 <MovieCard key={item.id} movie={item} onClick={() => setSelectedId(item.id)} />

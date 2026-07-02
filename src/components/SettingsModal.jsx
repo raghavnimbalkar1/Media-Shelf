@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useEscape from "../useEscape.js";
 
 const fallbackApi = {
   settings: {
@@ -18,6 +19,8 @@ export default function SettingsModal({ currentKey, onClose, onSaved, onDataChan
   const [busy, setBusy] = useState(false);
   const [dataMsg, setDataMsg] = useState("");
   const [dataErr, setDataErr] = useState("");
+
+  useEscape(onClose);
 
   async function save() {
     const normalized = value.trim();
